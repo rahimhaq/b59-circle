@@ -11,16 +11,16 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { useLoginForm } from '../hooks/use-login-form';
+import { useRegisterForm } from '../hooks/use-register-form';
 
-export default function LoginForm(props: BoxProps) {
+export default function RegisterForm(props: BoxProps) {
   const { errors, handleSubmit, isPending, onSubmit, register } =
-    useLoginForm();
+    useRegisterForm();
 
   return (
     <Box display={'flex'} flexDirection={'column'} gap={'12px'} {...props}>
       <Image src={brandLogo} width={'108px'} />
-      <Text fontSize={'28px'}>Login to Circle</Text>
+      <Text fontSize={'28px'}>Create an Account to Circle</Text>
       <form
         onSubmit={handleSubmit(onSubmit)}
         style={{
@@ -29,6 +29,14 @@ export default function LoginForm(props: BoxProps) {
           gap: '12px',
         }}
       >
+        <Field.Root invalid={!!errors.fullName?.message}>
+          <Input placeholder="Full Name" {...register('fullName')} />
+          <Field.ErrorText>{errors.fullName?.message}</Field.ErrorText>
+        </Field.Root>
+        <Field.Root invalid={!!errors.fullName?.message}>
+          <Input placeholder="Username" {...register('username')} />
+          <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
+        </Field.Root>
         <Field.Root invalid={!!errors.email?.message}>
           <Input placeholder="Email" {...register('email')} />
           <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
@@ -41,24 +49,19 @@ export default function LoginForm(props: BoxProps) {
           />
           <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
         </Field.Root>
-        <Box display={'flex'} justifyContent={'flex-end'}>
-          <ChakraLink asChild>
-            <Link to={'/forgot-password'}>Forgot password?</Link>
-          </ChakraLink>
-        </Box>
         <Button
           backgroundColor={'brand'}
           color={'white'}
           type="submit"
           disabled={isPending ? true : false}
         >
-          {isPending ? <Spinner /> : 'Login'}
+          {isPending ? <Spinner /> : 'Register'}
         </Button>
       </form>
       <Text as="span">
-        Don't have an account yet?{' '}
+        Already have account?{' '}
         <ChakraLink asChild color={'brand'}>
-          <Link to={'/register'}>Create account</Link>
+          <Link to={'/login'}>Login</Link>
         </ChakraLink>
       </Text>
     </Box>
